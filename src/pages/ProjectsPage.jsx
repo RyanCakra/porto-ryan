@@ -142,6 +142,7 @@ const entranceVariants = {
 
 function ProjectsPage() {
   const [showContent, setShowContent] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -151,24 +152,27 @@ function ProjectsPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleExitComplete = () => {
+    setIsExiting(true);
+  };
+
   return (
     <motion.div className="relative min-h-screen bg-gray-900 bg-opacity-95" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       <BackgroundBeamsWithCollision className="absolute inset-0 z-0 h-full opacity-40 pointer-events-none" />
       <Navbar className="relative z-10" />
-      <AnimatePresence mode="wait">
-        <TransitionEffect />
-        <div className="container mx-auto py-10 px-6 relative z-10">
-          {showContent && (
-            <>
-              <motion.h1 className="text-3xl font-bold text-center text-white mb-10" initial="hidden" animate="visible" variants={titleVariants}>
-                My Projects
-              </motion.h1>
-              <motion.div initial="hidden" animate="visible" variants={entranceVariants}>
-                <ExpandableCard cards={projects} />
-              </motion.div>
-            </>
-          )}
-        </div>
+
+      <AnimatePresence onExitComplete={handleExitComplete} mode="wait">
+        {!isExiting && <TransitionEffect />}
+        {showContent && (
+          <div className="container mx-auto py-10 px-6 relative z-10">
+            <motion.h1 className="text-3xl font-bold text-center text-pink-700 mb-10" initial="hidden" animate="visible" variants={titleVariants}>
+              My Projects
+            </motion.h1>
+            <motion.div initial="hidden" animate="visible" variants={entranceVariants}>
+              <ExpandableCard cards={projects} />
+            </motion.div>
+          </div>
+        )}
       </AnimatePresence>
     </motion.div>
   );

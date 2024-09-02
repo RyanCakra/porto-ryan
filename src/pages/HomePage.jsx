@@ -39,17 +39,17 @@ function HomePage() {
   return (
     <motion.div className="relative min-h-screen bg-cover bg-no-repeat bg-center" style={{ backgroundImage: "url('/src/assets/img/sigma.png')" }} initial="hidden" animate="visible" exit="hidden" variants={pageVariants}>
       {/* Background Layer */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute w-full h-screen inset-0 z-0">
         <BackgroundBeamsWithCollision className="absolute inset-0 opacity-60" />
       </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-0 sm:px-6 sm:py-10 bg-gray-900 bg-opacity-70">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full sm:min-h-screen 2xl:h-screen px-4 py-0 sm:px-6 sm:py-10 bg-gray-900 bg-opacity-70">
         <AnimatePresence mode="wait">
-          <TransitionEffect />
+          <TransitionEffect key="transitionEffect" />
         </AnimatePresence>
         {transitionDone && (
-          <motion.div className="flex flex-col items-center justify-center h-full px-4 py-6" variants={contentVariants} initial="hidden" animate="visible" exit="hidden">
+          <motion.div className="flex flex-col items-center justify-center px-4 py-6" variants={contentVariants} initial="hidden" animate="visible" exit="hidden">
             <div className="flex flex-col items-center text-white mt-10 p-4 rounded-lg">
               {/* <LanternDisplay className="hidden" /> */}
               <Greeting />
@@ -80,27 +80,27 @@ function HomePage() {
                   </motion.button>
                 </div>
                 <div className="flex flex-col w-full items-center sm:justify-start sm:items-start sm:flex-row  gap-4 mt-10">
-                  <p>See more at</p>
+                  <p>See more at </p>
                   <div className="flex flex-row gap-3">
-                    <Link to="/about" className="text-base underline text-pink-700 hover:text-slate-600 transition duration-100">
+                    <Link to="/about" className="text-base underline text-pink-700 hover:text-slate-600 hover:scale-105 transition duration-150">
                       About
                     </Link>
-                    <Link to="/works" className="text-base underline text-pink-700 hover:text-slate-600 transition duration-100">
+                    {/* <Link to="/works" className="text-base underline text-pink-700 hover:text-slate-600 hover:scale-105 transition duration-150">
                       Works
-                    </Link>
-                    <Link to="/projects" className="text-base underline text-pink-700 hover:text-slate-600 transition duration-100">
+                    </Link> */}
+                    <Link to="/projects" className="text-base underline text-pink-700 hover:text-slate-600 hover:scale-105 transition duration-150">
                       Projects
                     </Link>
                   </div>
                 </div>
                 <motion.div className="flex flex-row w-full h-full items-center justify-evenly mt-20 text-2xl" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
-                  <a className="opacity-30" href="https://www.linkedin.com/in/ryancakra/">
+                  <a className="opacity-30 hover:opacity-100 transition-opacity duration-300" href="https://www.linkedin.com/in/ryancakra/">
                     <FaLinkedin />
                   </a>
-                  <a className="opacity-30" href="https://github.com/RyanCakra">
+                  <a className="opacity-30 hover:opacity-100 transition-opacity duration-300" href="https://github.com/RyanCakra">
                     <FaGithub />
                   </a>
-                  <a className="opacity-30" href="mailto:ryancakra92@gmail.com?subject=Hi &body=hello, my name is">
+                  <a className="opacity-30 hover:opacity-100 transition-opacity duration-300" href="mailto:ryancakra92@gmail.com?subject=Hi &body=hello, my name is">
                     <SiGmail />
                   </a>
                 </motion.div>

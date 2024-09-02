@@ -7,3 +7,9 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+/* Mengatur opacity dari scroll bar */
+body::-webkit-scrollbar {
+  width: 0; /* Menyembunyikan scroll bar sepenuhnya */
+  background: transparent; /* Membuat background scrollbar transparan */
+}
