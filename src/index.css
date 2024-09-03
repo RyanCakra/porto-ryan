@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Mengatur opacity dari scroll bar */
+body::-webkit-scrollbar {
+  width: 0; /* Menyembunyikan scroll bar sepenuhnya */
+  background: transparent; /* Membuat background scrollbar transparan */
+}
