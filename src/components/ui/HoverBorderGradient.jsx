@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
-export function HoverBorderGradient({ children, containerClassName, className, roundedClass = 'rounded-lg', as: Tag = 'button', duration = 1, clockwise = true, color = '#a21caf', ...props }) {
+export function HoverBorderGradient({ children, containerClassName, className, roundedClass = 'rounded-lg', as: Tag = 'button', duration = 0.8, clockwise = false, color = '#be185d', ...props }) {
   const [hovered, setHovered] = useState(false);
   const [direction, setDirection] = useState('TOP');
 
@@ -35,7 +35,7 @@ export function HoverBorderGradient({ children, containerClassName, className, r
     <Tag
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={cn(`relative flex ${roundedClass} content-center bg-black hover:bg-black transition duration-500  items-center justify-center overflow-visible p-px w-fit`, containerClassName)}
+      className={cn(`relative flex ${roundedClass} content-center bg-transparent hover:bg-pink-700 transition duration-500  items-center justify-center overflow-visible p-px w-fit`, containerClassName)}
       {...props}
     >
       <motion.div

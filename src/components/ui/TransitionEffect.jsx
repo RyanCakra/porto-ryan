@@ -16,7 +16,6 @@ const TransitionEffect = () => {
       <AnimatePresence>
         {!isTransitioningOut && (
           <>
-            {/* Layer 1: Pink background */}
             <motion.div
               className="
                 fixed
@@ -27,7 +26,7 @@ const TransitionEffect = () => {
                 overflow-hidden
                 z-30
                 bg-pink-700
-                will-change-transform  /* Optimize for smoother animations */
+                will-change-transform  
               "
               initial={{ x: '-100%' }}
               animate={{ x: '0%' }}
@@ -43,7 +42,6 @@ const TransitionEffect = () => {
 
       {isTransitioningOut && (
         <AnimatePresence>
-          {/* Layer 1: Pink background moving out */}
           <motion.div
             className="
               fixed
@@ -54,7 +52,7 @@ const TransitionEffect = () => {
               overflow-hidden
               z-50
               bg-pink-700
-              will-change-transform  /* Optimize for smoother animations */
+              will-change-transform 
             "
             initial={{ x: '0%' }}
             animate={{ x: '-100%' }}
@@ -64,7 +62,6 @@ const TransitionEffect = () => {
             }}
           />
 
-          {/* Layer 2: Gray background following Layer 1 */}
           <motion.div
             className="
               fixed
@@ -82,11 +79,10 @@ const TransitionEffect = () => {
             transition={{
               duration: 1.2,
               ease: [0.25, 0.1, 0.25, 1],
-              delay: 0.1, // Delay to follow Layer 1
+              delay: 0.1,
             }}
           />
 
-          {/* Layer 3: Slate background following Layer 2 */}
           <motion.div
             className="
               fixed
@@ -97,14 +93,14 @@ const TransitionEffect = () => {
               overflow-hidden
               z-30
               bg-gray-800
-              will-change-transform  /* Optimize for smoother animations */
+              will-change-transform  
             "
             initial={{ x: '0%' }}
             animate={{ x: '-100%' }}
             transition={{
               duration: 1.2,
               ease: [0.25, 0.1, 0.25, 1],
-              delay: 0.2, // Delay to follow Layer 2
+              delay: 0.2,
             }}
           />
         </AnimatePresence>

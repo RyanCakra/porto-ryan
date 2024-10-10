@@ -13,3 +13,14 @@ body::-webkit-scrollbar {
   width: 0; /* Menyembunyikan scroll bar sepenuhnya */
   background: transparent; /* Membuat background scrollbar transparan */
 }
+
+/* Untuk menyembunyikan scrollbar di dalam elemen dengan overflow-y-auto */
+.overflow-hidden-scroll::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.overflow-hidden-scroll {
+  scrollbar-width: none; /* Untuk Firefox */
+  -ms-overflow-style: none; /* Untuk IE dan Edge */
+}

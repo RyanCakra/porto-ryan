@@ -8,6 +8,7 @@ import TransitionEffect from '../components/ui/TransitionEffect.jsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWithCollision.jsx';
 import { HoverBorderGradient } from '../components/ui/HoverBorderGradient.jsx';
+import { FlipWords } from '../components/ui/FlipWords.jsx';
 
 const sendEmail = () => {
   window.location.href = 'mailto:ryancakra92@gmail.com?subject=Hi &body=hello, my name is';
@@ -27,6 +28,7 @@ const contentVariants = {
 
 function HomePage() {
   const [transitionDone, setTransitionDone] = useState(false);
+  const words = ['Hai :D', 'こんにちは', 'Hello ', '你好 ', 'Halo ', 'السلام عليكم', 'Hola ', '안녕하세요'];
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,7 +54,11 @@ function HomePage() {
           <motion.div className="flex flex-col items-center justify-center px-4 py-6" variants={contentVariants} initial="hidden" animate="visible" exit="hidden">
             <div className="flex flex-col items-center text-white mt-10 p-4 rounded-lg">
               {/* <LanternDisplay className="hidden" /> */}
-              <Greeting />
+
+              <div>
+                <FlipWords words={words} />
+              </div>
+
               <div className="flex flex-col mt-20 w-full max-w-lg text-center sm:max-w-2xl sm:text-left sm:mx-0 items-center sm:p-2">
                 <div className="mb-6 sm:mb-4 md:max-w-2xl">
                   <motion.h1 className="text-start text-[0.95em] sm:text-[1.3em] font-bold mt-4 md:mt-0" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
