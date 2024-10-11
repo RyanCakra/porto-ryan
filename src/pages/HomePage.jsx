@@ -70,7 +70,7 @@ function HomePage() {
                   </motion.p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-2 w-full">
-                  <a href="./public/Ryancakra_CV.pdf" download="Ryancakra_CV.pdf">
+                  <a href="/Ryancakra_CV.pdf" download="Ryancakra_CV.pdf">
                     <HoverBorderGradient containerClassName="w-full md:w-auto" className="px-4 py-2" roundedClass="rounded-lg">
                       Résumé
                     </HoverBorderGradient>
