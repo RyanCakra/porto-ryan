@@ -39,7 +39,7 @@ function HomePage() {
   }, []);
 
   return (
-    <motion.div className="relative min-h-screen overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: "url('/public/img/sigma.png')" }} initial="hidden" animate="visible" exit="hidden" variants={pageVariants}>
+    <motion.div className="relative min-h-screen overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: "url('/img/sigma.png')" }} initial="hidden" animate="visible" exit="hidden" variants={pageVariants}>
       {/* Background Layer */}
       <div className="absolute w-full min-h-screen inset-0 z-0">
         <BackgroundBeamsWithCollision className="absolute inset-0 opacity-60" />

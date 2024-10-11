@@ -78,7 +78,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-2 gap-4">
             <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1b_-mDOU-Tt-NR8V2YL_lNYYRlmPO98ri/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-start items-end p-4 cursor-pointer"
@@ -87,7 +87,7 @@ function AboutPage() {
               </div>
             </motion.div>
             <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1r3BVaPjO9jAPzLqtcrwtAzeqySP8pekj/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
@@ -111,7 +111,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-4 gap-4">
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/doc-isas-qs.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/doc-isas-qs.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/document/d/1yVNPiu9aB0HwPsaG__Ei8-74eRQx1qBy/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -121,7 +121,7 @@ function AboutPage() {
             </motion.div>
 
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/ppt-2-bf.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-2-bf.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1mTGMHrN6jGZDdSNC4R4d7cmX3rDnaofJ/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -131,7 +131,7 @@ function AboutPage() {
             </motion.div>
 
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/ppt-1-ntp.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-1-ntp.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer "
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1M-1OnOXmbMQFf1eQzdNA_MccbCEV11Vq/preview')}
@@ -157,7 +157,7 @@ function AboutPage() {
           <div className="grid grid-cols-6 gap-4 auto-rows-[minmax(100px, 1fr)]">
             {/* First Image - Vertical layout */}
             <motion.div className="col-span-2 row-span-3 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/doksli2.JPG" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/doksli2.JPG" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
                 onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
@@ -168,7 +168,7 @@ function AboutPage() {
 
             {/* Second Image */}
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/sertif-dpr.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/sertif-dpr.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/17Cha63VtCPyopWSzmsSGtP-FEfnPNuq1/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -179,7 +179,7 @@ function AboutPage() {
 
             {/* Third Image */}
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/ppt-cinema.png" alt="Cinema Ticket" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-cinema.png" alt="Cinema Ticket" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/137YL14nu3X46bxkDx5Cf7MXG5zqqvd48/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -190,7 +190,7 @@ function AboutPage() {
 
             {/* Fourth Image */}
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/ppt-odrin.png" alt="Order a drink app" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-odrin.png" alt="Order a drink app" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1KfTkbz0l7cUsWSqYYEsvl_JUOyh6L6kL/preview')}
@@ -201,7 +201,7 @@ function AboutPage() {
 
             {/* Fifth Image */}
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/evo.png" alt="Learning Coding - 2021" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/evo.png" alt="Learning Coding - 2021" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-disabled">
                 <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Small Project from university</span>
               </div>
@@ -222,7 +222,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-4 gap-4">
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/news-portal.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/news-portal.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
@@ -292,7 +292,7 @@ function AboutPage() {
                 <motion.div className="mt-10 lg:mt-0 lg:ml-10 hidden lg:block" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}>
                   <div className="flex justify-center items-center">
                     <motion.img
-                      src="/public/dokumen/profil.jpg"
+                      src="/dokumen/profil.jpg"
                       alt="Journey illustration"
                       className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-pink-700"
                       initial={{ opacity: 0 }}
