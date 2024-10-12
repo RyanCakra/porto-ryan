@@ -22,7 +22,7 @@ const TransitionEffect = () => {
                 top-0
                 left-0
                 w-screen
-                min-h-screen
+                h-screen
                 overflow-hidden
                 z-30
                 bg-pink-700

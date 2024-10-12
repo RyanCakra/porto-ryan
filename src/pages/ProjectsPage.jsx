@@ -59,7 +59,7 @@ const projects = [
   {
     title: 'Personal News Portal',
     description: 'A dynamic blogging platform built with Laravel 10, featuring user interactions, multimedia posts, and full admin control.',
-    src: '/src/assets/img/project/news-portal.png',
+    src: '/img/project/news-portal.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -93,7 +93,7 @@ const projects = [
   {
     title: 'Landing Page for Chill',
     description: 'An interactive UI for a responsive landing page.',
-    src: '/src/assets/img/project/chill.png',
+    src: '/img/project/chill.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -131,7 +131,7 @@ const projects = [
   {
     title: 'Portofolio Website',
     description: 'A clean and interactive portfolio site built with React and Tailwind CSS.',
-    src: '/src/assets/img/project/porto.png',
+    src: '/img/project/porto.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -169,7 +169,7 @@ const projects = [
   {
     title: 'Ordering a drink Application',
     description: 'A simple Android app for ordering drinks, built with Kotlin.',
-    src: '/src/assets/img/project/odrin.png',
+    src: '/img/project/odrin.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -201,7 +201,7 @@ const projects = [
   {
     title: 'Movie Ticketing App',
     description: 'A simple, memorable movie ticketing app built with Java.',
-    src: '/src/assets/img/project/java-ticket.png',
+    src: '/img/project/java-ticket.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -226,7 +226,7 @@ const projects = [
   {
     title: 'Online Course Website',
     description: 'An evolving e-learning platform built with React and Node.js.',
-    src: '/src/assets/img/project/videobelajar.png',
+    src: '/img/project/videobelajar.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {
@@ -261,7 +261,7 @@ const projects = [
   {
     title: 'Todolist application',
     description: 'A mobile-inspired to-do list app with categorization features.',
-    src: '/src/assets/img/project/todolist.png',
+    src: '/img/project/todolist.png',
     ctaText: 'Visit',
     ctaLink: '#',
     content: () => {

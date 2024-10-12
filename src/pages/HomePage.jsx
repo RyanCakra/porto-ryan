@@ -33,15 +33,15 @@ function HomePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTransitionDone(true);
-    }, 1000); // Adjust this duration to match the length of your TransitionEffect animation
+    }, 1000); 
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <motion.div className="relative min-h-screen bg-cover bg-no-repeat bg-center" style={{ backgroundImage: "url('/src/assets/img/sigma.png')" }} initial="hidden" animate="visible" exit="hidden" variants={pageVariants}>
+    <motion.div className="relative min-h-screen overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: "url('/img/sigma.png')" }} initial="hidden" animate="visible" exit="hidden" variants={pageVariants}>
       {/* Background Layer */}
-      <div className="absolute w-full h-screen inset-0 z-0">
+      <div className="absolute w-full min-h-screen inset-0 z-0">
         <BackgroundBeamsWithCollision className="absolute inset-0 opacity-60" />
       </div>
 
