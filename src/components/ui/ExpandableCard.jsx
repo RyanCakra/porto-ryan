@@ -42,21 +42,10 @@ export function ExpandableCard({ cards }) {
       <AnimatePresence>
         {active && typeof active === 'object' ? (
           <div className="fixed inset-0 grid place-items-center z-[100]">
-            {/* <motion.button
-              key={`button-${active.title}-${id}`}
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.2 } }}
-              exit={{ opacity: 0, transition: { duration: 0.1 } }}
-              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
-              onClick={() => setActive(null)}
-            >
-              <CloseIcon />
-            </motion.button> */}
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px] h-max md:h-fit md:max-h-[90%] flex flex-col bg-gray-800 sm:rounded-3xl overflow-hidden"
+              className="relative w-full max-w-[400px] md:max-w-[520px] rounded-lg md:h-fit md:max-h-[90%] flex flex-col bg-gray-800 sm:rounded-3xl overflow-hidden"
               initial={{ scale: 0.85, rotate: 5 }}
               animate={{
                 scale: 1,
@@ -70,16 +59,27 @@ export function ExpandableCard({ cards }) {
                 transition: { duration: 0.2, ease: 'easeInOut' },
               }}
             >
+              <motion.button
+                key={`button-${active.title}-${id}`}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.2 } }}
+                exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                className="flex absolute top-0 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
+                onClick={() => setActive(null)}
+              >
+                <CloseIcon />
+              </motion.button>
               <motion.div layoutId={`image-${active.title}-${id}`}>
-                <Img priority width={200} height={200} src={active.src} alt={active.title} className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top" />
+                <Img priority={String(true)} width={150} height={150} src={active.src} alt={active.title} className="w-full h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-center" />
               </motion.div>
               <div>
                 <div className="flex justify-between items-start p-4">
                   <div className="">
-                    <motion.h3 layoutId={`title-${active.title}-${id}`} className="font-medium text-neutral-200 text-base">
+                    <motion.h3 layoutId={`title-${active.title}-${id}`} className="text-cyan-400 font-bold text-base">
                       {active.title}
                     </motion.h3>
-                    <motion.p layoutId={`description-${active.description}-${id}`} className="text-neutral-400 max-w-sm text-base">
+                    <motion.p layoutId={`description-${active.description}-${id}`} className="text-neutral-400 max-w-sm w-full text-xs md:text-sm">
                       {active.description}
                     </motion.p>
                   </div>
@@ -100,7 +100,7 @@ export function ExpandableCard({ cards }) {
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-pink-600 text-white border border-transparent"
+                    className="px-2 py-1 text-xs md:px-4 md:py-2 text-sm md:text-base rounded-xl lg:rounded-full font-bold bg-pink-600 text-white border border-transparent whitespace-nowrap"
                   >
                     {active.ctaText}
                   </motion.a>

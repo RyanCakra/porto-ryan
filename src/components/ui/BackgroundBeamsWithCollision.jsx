@@ -217,3 +217,5 @@ const Explosion = ({ ...props }) => {
     </div>
   );
 };
+
+export default BackgroundBeamsWithCollision;

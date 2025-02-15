@@ -7,7 +7,12 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
   darkMode: 'class',
   theme: {
-    // rest of the code
+    extend: {
+      fontFamily: {
+        Inter: ['Inter', 'sans-serif'],
+        Jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+      },
+    },
   },
   plugins: [
     // rest of the code

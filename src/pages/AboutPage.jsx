@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWithCollision.jsx';
-import TransitionEffect from '../components/ui/TransitionEffect.jsx';
 import { Timeline } from '../components/ui/Timeline.jsx';
 import FileViewer from '../components/FileViewer.jsx';
 
@@ -47,14 +46,8 @@ const imageVariants = {
 };
 
 function AboutPage() {
-  const [showContent, setShowContent] = useState(false);
   const [isFileViewerVisible, setIsFileViewerVisible] = useState(false);
   const [fileLink, setFileLink] = useState(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowContent(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleImageClick = (link) => {
     setFileLink(link);
@@ -231,7 +224,7 @@ function AboutPage() {
               </div>
             </motion.div>
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/public/dokumen/ppt-journey.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-journey.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1Qxb3QBWGg_uX9IaBhxcQQ1u4Q02-qSWd/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
@@ -244,9 +237,9 @@ function AboutPage() {
       ),
     },
     {
-      title: 'Looking Ahead',
+      title: '2025',
       content: (
-        <motion.div className="text-white text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+        <motion.div className="text-white font-Inter text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
           <p>
             As I reflect on my journey so far, I feel a deep sense of accomplishment, but I know that the road ahead is full of even greater challenges and opportunities. With the foundation I've built in web development, mobile
             applications, and real-world project experiences, I am now focused on taking my skills to the global stage. My ultimate goal is to become a Fullstack Developer at an internationally recognized company.
@@ -259,57 +252,63 @@ function AboutPage() {
         </motion.div>
       ),
     },
+    {
+      title: 'Looking Ahead',
+      content: (
+        <motion.div className="text-white font-Inter text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+          <p>
+            As I look back on my journey, I see more than just lines of code and completed projects—I see growth, challenges overcome, and a clear vision of where I want to go next. With a strong foundation in web and mobile development, I
+            am ready to take my career to an international stage, starting with Germany.
+            <br /> <br /> In 2025, I am fully committed to learning German and joining an Ausbildung program. This step is not just about gaining technical skills, but also about adapting to a new work culture, collaborating with talented
+            professionals, and proving myself in a global tech environment. I see Germany as a place where I can refine my expertise, work on innovative projects, and push my abilities to new levels. <br /> <br /> My goal is clear: to
+            become a well-rounded and highly skilled developer with international experience. Germany is the perfect place to start that journey. Here, I aim to grow, contribute, and build something meaningful—both for the teams I work with
+            and for my own career. Beyond that, I remain open to opportunities that will take me even further. Technology is always evolving, and so am I. The road ahead is filled with challenges, but that’s what makes it exciting. This
+            isn’t just a career path—it’s a lifelong adventure. And I’m just getting started.
+          </p>
+        </motion.div>
+      ),
+    },
   ];
 
   return (
-    <motion.div className="relative min-h-screen bg-gray-900 " initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-      {/* Background Layer */}
-      <div className="absolute w-full minh-screen inset-0 z-0">
-        <BackgroundBeamsWithCollision className="absolute inset-0 opacity-20" />
-      </div>
+    <motion.div className="relative min-h-screen bg-gray-900 bg-opacity-95" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+      <BackgroundBeamsWithCollision className="absolute inset-0 z-0 h-full opacity-65 pointer-events-none" />
       <Navbar className="relative z-10" />
 
-      <AnimatePresence mode="wait">
-        <TransitionEffect />
-        {showContent && (
-          <>
-            <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-              <motion.div className="flex flex-col lg:flex-row justify-between items-center" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-                <motion.div className="text-white sm:text-base md:text-lg lg:text-lg max-w-xl" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-                  <motion.h2 variants={headingVariants} className="text-2xl md:text-4xl font-semibold text-pink-600 mb-6">
-                    My Journey as a Fullstack Developer
-                  </motion.h2>
-                  <motion.p variants={paragraphVariants} className="leading-relaxed mb-6">
-                    Since discovering my passion for web and mobile development in 2021, I have continuously expanded my skills through formal education and various projects. These experiences have strengthened my expertise in fullstack
-                    development.
-                  </motion.p>
-                  <motion.p variants={paragraphVariants} className="leading-relaxed">
-                    To stay ahead in this fast-evolving field, I have completed several bootcamps and training programs, further enhancing my technical abilities. I am committed to lifelong learning and always ready to embrace new
-                    challenges as I continue my journey as a Fullstack Developer.
-                  </motion.p>
-                </motion.div>
+      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
+        <motion.div className="flex flex-col lg:flex-row justify-between items-center" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
+          <motion.div className="text-white font-Jakarta sm:text-base md:text-lg lg:text-lg max-w-xl" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
+            <motion.h2 variants={headingVariants} className="text-2xl md:text-4xl font-semibold text-pink-600 mb-6">
+              My Journey as a Fullstack Developer
+            </motion.h2>
+            <motion.p variants={paragraphVariants} className="leading-relaxed mb-6">
+              Since discovering my passion for web and mobile development in 2021, I have continuously expanded my skills through formal education and various projects. These experiences have strengthened my expertise in fullstack
+              development.
+            </motion.p>
+            <motion.p variants={paragraphVariants} className="leading-relaxed">
+              To stay ahead in this fast-evolving field, I have completed several bootcamps and training programs, further enhancing my technical abilities. I am committed to lifelong learning and always ready to embrace new challenges as I
+              continue my journey as a Fullstack Developer.
+            </motion.p>
+          </motion.div>
 
-                <motion.div className="mt-10 lg:mt-0 lg:ml-10 hidden lg:block" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}>
-                  <div className="flex justify-center items-center">
-                    <motion.img
-                      src="/dokumen/profil.jpg"
-                      alt="Journey illustration"
-                      className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-pink-700"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      variants={imageVariants}
-                    />
-                  </div>
-                </motion.div>
-              </motion.div>
+          <motion.div className="mt-10 lg:mt-0 lg:ml-10 hidden lg:block" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}>
+            <div className="flex justify-center items-center">
+              <motion.img
+                src="/dokumen/profil.jpg"
+                alt="Journey illustration"
+                className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-pink-700"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                variants={imageVariants}
+              />
             </div>
+          </motion.div>
+        </motion.div>
+      </div>
 
-            <Timeline data={timelineData} />
-            {isFileViewerVisible && <FileViewer fileLink={fileLink} onClose={closeFileViewer} />}
-          </>
-        )}
-      </AnimatePresence>
+      <Timeline data={timelineData} />
+      {isFileViewerVisible && <FileViewer fileLink={fileLink} onClose={closeFileViewer} />}
     </motion.div>
   );
 }
