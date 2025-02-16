@@ -82,6 +82,9 @@ function HomePage() {
             </div>
           </div>
         </div>
+        <div className="absolute bottom-[768px] md:bottom-0 right-2 bg-transparent h-10">
+          <p className="mt-2 text-[0.58em] font-Jakarta text-gray-700 text-start sm:text-sm">Last Updated At: 2/16/2025</p>
+        </div>
       </div>
     </motion.div>
   );
