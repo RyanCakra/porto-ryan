@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.jsx';
 import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWithCollision.jsx';
 import { Timeline } from '../components/ui/Timeline.jsx';
 import FileViewer from '../components/FileViewer.jsx';
+import '/src/assets/css/public.css';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -60,10 +61,11 @@ function AboutPage() {
   };
 
   const timelineData = [
+    //2021
     {
       title: '2021',
       content: (
-        <motion.div className="text-white text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
           <p className="mb-8">
             In 2021, my introduction to programming was somewhat unplanned. It started when I stumbled upon online coding courses on Progate purely out of curiosity. Initially, it was just a fun distraction amidst my busy routine. But as I
             worked through Python, HTML, and CSS, my casual interest quickly transformed into a genuine passion for programming. Even though I couldn’t finish all the courses due to time constraints, this early exploration opened a door to
@@ -71,7 +73,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-2 gap-4">
             <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/p_html.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1b_-mDOU-Tt-NR8V2YL_lNYYRlmPO98ri/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-start items-end p-4 cursor-pointer"
@@ -80,7 +82,7 @@ function AboutPage() {
               </div>
             </motion.div>
             <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/p_html.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/p_html.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1r3BVaPjO9jAPzLqtcrwtAzeqySP8pekj/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
@@ -92,10 +94,11 @@ function AboutPage() {
         </motion.div>
       ),
     },
+    //2022
     {
       title: '2022',
       content: (
-        <motion.div className="text-white text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
           {/* <h1 className="text-white text-sm md:text-2xl font-semibold mb-2">Advancing My Knowledge in Information Technology</h1> */}
           <p className="mb-8">
             As my curiosity in programming grew, I knew I had to dive deeper, and so I enrolled in a double-degree program in Information Technology. This phase involved a lot of small projects, mostly academic assignments. While I wasn’t
@@ -104,7 +107,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-4 gap-4">
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/doc-isas-qs.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/doc-isas-qs.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/document/d/1yVNPiu9aB0HwPsaG__Ei8-74eRQx1qBy/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -114,7 +117,7 @@ function AboutPage() {
             </motion.div>
 
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-2-bf.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-2-bf.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1mTGMHrN6jGZDdSNC4R4d7cmX3rDnaofJ/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -124,7 +127,7 @@ function AboutPage() {
             </motion.div>
 
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-1-ntp.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-1-ntp.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer "
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1M-1OnOXmbMQFf1eQzdNA_MccbCEV11Vq/preview')}
@@ -136,10 +139,11 @@ function AboutPage() {
         </motion.div>
       ),
     },
+    //2023
     {
       title: '2023',
       content: (
-        <motion.div className="text-white text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
           <p className="mb-8">
             2023 became the turning point in my journey. It started with advanced coding projects from university that introduced me to languages like C++, Java, and Kotlin. Midway through the year, I was lucky enough to land an internship
             at the House of Representatives (DPR), where I worked as a Fullstack Web and Android Developer. This was my first taste of real-world development, where I learned to navigate the complexities of large-scale projects. By the time
@@ -150,7 +154,7 @@ function AboutPage() {
           <div className="grid grid-cols-6 gap-4 auto-rows-[minmax(100px, 1fr)]">
             {/* First Image - Vertical layout */}
             <motion.div className="col-span-2 row-span-3 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/doksli2.JPG" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/doksli2.JPG" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
                 onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
@@ -161,7 +165,7 @@ function AboutPage() {
 
             {/* Second Image */}
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/sertif-dpr.png" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
+              <img src="/dokumen/sertif-dpr.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/17Cha63VtCPyopWSzmsSGtP-FEfnPNuq1/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -172,7 +176,7 @@ function AboutPage() {
 
             {/* Third Image */}
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-cinema.png" alt="Cinema Ticket" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-cinema.png" loading="eager" alt="Cinema Ticket" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/137YL14nu3X46bxkDx5Cf7MXG5zqqvd48/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
@@ -183,7 +187,7 @@ function AboutPage() {
 
             {/* Fourth Image */}
             <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-odrin.png" alt="Order a drink app" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-odrin.png" loading="eager" alt="Order a drink app" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
                 onClick={() => handleImageClick('https://docs.google.com/presentation/d/1KfTkbz0l7cUsWSqYYEsvl_JUOyh6L6kL/preview')}
@@ -194,7 +198,7 @@ function AboutPage() {
 
             {/* Fifth Image */}
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/evo.png" alt="Learning Coding - 2021" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/evo.png" loading="eager" alt="Learning Coding - 2021" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-disabled">
                 <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Small Project from university</span>
               </div>
@@ -203,10 +207,11 @@ function AboutPage() {
         </motion.div>
       ),
     },
+    //2024
     {
       title: '2024',
       content: (
-        <motion.div className="text-white text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
           <p className="mb-8">
             In 2024, I feel more confident than ever in pursuing a career as a Fullstack Developer. At the end of 2023, I took on a freelance project that involved creating a personal web blog using Laravel. This three-month project not
             only honed my skills but also gave me valuable experience working with a real client. Completing this project boosted my confidence and inspired me to start applying for full-time roles. Although I faced rejections after several
@@ -215,7 +220,7 @@ function AboutPage() {
           </p>
           <div className="grid grid-cols-4 gap-4">
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/news-portal.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/news-portal.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
@@ -224,7 +229,7 @@ function AboutPage() {
               </div>
             </motion.div>
             <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-journey.png" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
+              <img src="/dokumen/ppt-journey.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
               <div
                 onClick={() => handleImageClick('https://drive.google.com/file/d/1Qxb3QBWGg_uX9IaBhxcQQ1u4Q02-qSWd/preview')}
                 className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
@@ -236,26 +241,28 @@ function AboutPage() {
         </motion.div>
       ),
     },
-    {
-      title: '2025',
-      content: (
-        <motion.div className="text-white font-Inter text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-          <p>
-            As I reflect on my journey so far, I feel a deep sense of accomplishment, but I know that the road ahead is full of even greater challenges and opportunities. With the foundation I've built in web development, mobile
-            applications, and real-world project experiences, I am now focused on taking my skills to the global stage. My ultimate goal is to become a Fullstack Developer at an internationally recognized company.
-            <br />
-            <br />
-            To achieve this, I am continuously improving my technical and soft skills, whether through professional development programs, hands-on projects, or self-learning. I understand that adapting to new environments and collaborating
-            with diverse teams will be key to thriving in a global market. I am fully committed to expanding my horizons, embracing new technologies, and learning from experienced professionals in the field. The experiences I've had so far
-            are just the beginning, and I’m excited for what lies ahead in my journey toward becoming a Fullstack Developer abroad.
-          </p>
-        </motion.div>
-      ),
-    },
+    //2025
+    // {
+    //   title: '2025',
+    //   content: (
+    //     <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+    //       <p>
+    //         As I reflect on my journey so far, I feel a deep sense of accomplishment, but I know that the road ahead is full of even greater challenges and opportunities. With the foundation I've built in web development, mobile
+    //         applications, and real-world project experiences, I am now focused on taking my skills to the global stage. My ultimate goal is to become a Fullstack Developer at an internationally recognized company.
+    //         <br />
+    //         <br />
+    //         To achieve this, I am continuously improving my technical and soft skills, whether through professional development programs, hands-on projects, or self-learning. I understand that adapting to new environments and collaborating
+    //         with diverse teams will be key to thriving in a global market. I am fully committed to expanding my horizons, embracing new technologies, and learning from experienced professionals in the field. The experiences I've had so far
+    //         are just the beginning, and I’m excited for what lies ahead in my journey toward becoming a Fullstack Developer abroad.
+    //       </p>
+    //     </motion.div>
+    //   ),
+    // },
+    // looking ahead
     {
       title: 'Looking Ahead',
       content: (
-        <motion.div className="text-white font-Inter text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
+        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
           <p>
             As I look back on my journey, I see more than just lines of code and completed projects—I see growth, challenges overcome, and a clear vision of where I want to go next. With a strong foundation in web and mobile development, I
             am ready to take my career to an international stage, starting with Germany.
@@ -296,6 +303,7 @@ function AboutPage() {
               <motion.img
                 src="/dokumen/profil.jpg"
                 alt="Journey illustration"
+                loading="eager"
                 className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-pink-700"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -307,7 +315,7 @@ function AboutPage() {
         </motion.div>
       </div>
 
-      <Timeline data={timelineData} />
+      <Timeline data={timelineData} key={window.location.pathname} />
       {isFileViewerVisible && <FileViewer fileLink={fileLink} onClose={closeFileViewer} />}
     </motion.div>
   );

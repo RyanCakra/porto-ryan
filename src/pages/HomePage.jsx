@@ -7,6 +7,7 @@ import LanternDisplay from '../components/lantern/LanternDisplay.jsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HoverBorderGradient } from '../components/ui/HoverBorderGradient.jsx';
 import { FlipWords } from '../components/ui/FlipWords.jsx';
+import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWithCollision.jsx';
 
 const sendEmail = () => {
   window.location.href = 'mailto:ryancakra92@gmail.com?subject=Hi &body=hello, my name is';
@@ -20,7 +21,7 @@ const contentVariants = {
 
 function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
-  const words = ['Hai :D', 'Guten Morgen', 'こんにちは', 'Hello ', '你好 ', 'Halo ', 'السلام عليكم', 'Hola ', '안녕하세요'];
+  const words = ['Hai :D', 'Guten Tag', 'こんにちは', 'Hello ', '你好 ', 'Halo ', 'السلام عليكم', 'Hola ', '안녕하세요'];
 
   // Synchronize animation start with main transition
   useEffect(() => {
@@ -30,6 +31,7 @@ function HomePage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: isMounted ? 1 : 0 }} transition={{ duration: 0.5 }} className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/img/sigma.png')" }}>
+      <BackgroundBeamsWithCollision className="absolute inset-0 z-0 h-full opacity-65 pointer-events-none" />
       {/* Content Layer */}
       <div className="relative font-Jakarta  z-10 flex flex-col items-center justify-center h-full sm:min-h-screen 2xl:h-screen px-4 py-0 sm:px-6 sm:py-10 bg-gray-900 bg-opacity-80">
         <div className="flex flex-col items-center text-white mt-10 p-4 rounded-lg">

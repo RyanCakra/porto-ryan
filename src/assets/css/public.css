@@ -19,3 +19,8 @@
 /* .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #e563f1, #191a4d);
 } */
+
+.timeline-content {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1));
+}

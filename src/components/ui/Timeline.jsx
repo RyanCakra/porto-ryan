@@ -5,13 +5,32 @@ export const Timeline = ({ data }) => {
   const ref = useRef(null);
   const containerRef = useRef(null);
   const [height, setHeight] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setHeight(entry.contentRect.height);
+      }
+    });
+
     if (ref.current) {
+      observer.observe(ref.current);
+      setIsMounted(true);
+    }
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, [data]);
+
+  // Trigger ulang perhitungan tinggi setelah mount
+  useEffect(() => {
+    if (isMounted && ref.current) {
       const rect = ref.current.getBoundingClientRect();
       setHeight(rect.height);
     }
-  }, [ref]);
+  }, [isMounted]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

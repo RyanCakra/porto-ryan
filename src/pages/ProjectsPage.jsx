@@ -6,7 +6,7 @@ import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWi
 import { FaHtml5, FaCss3Alt, FaLaravel, FaReact, FaJava, FaNodeJs } from 'react-icons/fa';
 import { SiMysql, SiTailwindcss, SiPhp, SiKotlin, SiExpress } from 'react-icons/si';
 import { DiJavascript } from 'react-icons/di';
-import '/public/index.css';
+import '/src/assets/css/public.css';
 
 // Animation variants for the H1 element
 const titleVariants = {
@@ -15,7 +15,7 @@ const titleVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.2,
       ease: 'easeOut',
     },
   },
@@ -30,7 +30,7 @@ const entranceVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       ease: 'easeInOut',
       delay: i * 0.2,
     },
@@ -344,7 +344,7 @@ function ProjectsPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowContent(true);
-    }, 1000);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
