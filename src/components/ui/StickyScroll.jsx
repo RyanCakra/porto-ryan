@@ -85,3 +85,5 @@ export const StickyScroll = ({ content, contentClassName }) => {
     </motion.div>
   );
 };
+
+export default StickyScroll;

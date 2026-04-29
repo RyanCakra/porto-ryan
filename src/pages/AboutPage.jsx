@@ -1,322 +1,279 @@
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import Navbar from '../components/Navbar.jsx';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BackgroundBeamsWithCollision } from '../components/ui/BackgroundBeamsWithCollision.jsx';
-import { Timeline } from '../components/ui/Timeline.jsx';
-import FileViewer from '../components/FileViewer.jsx';
+import { useLanguage } from '../context/LanguageContext.jsx';
 import '/src/assets/css/public.css';
 
-const sectionVariants = {
+// ─── animation variants ───────────────────────────────────────────────────────
+const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
+  visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    rotate: 0,
-    transition: {
-      duration: 0.7,
-      ease: 'easeOut',
-      staggerChildren: 0.3,
-    },
-  },
+    transition: { duration: 0.4, ease: 'easeOut', delay: i * 0.06 },
+  }),
 };
 
-const headingVariants = {
-  hidden: { opacity: 0, y: -40, rotate: -3 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    rotate: 0,
-    transition: { duration: 1, ease: 'easeOut' },
-  },
-};
+// ─── helpers ──────────────────────────────────────────────────────────────────
+const SectionLabel = ({ children }) => (
+  <div className="flex items-center gap-3 mb-6">
+    <span className="text-[11px] uppercase tracking-[0.2em] text-pink-500 font-semibold font-Jakarta">{children}</span>
+    <span className="flex-1 h-px bg-gradient-to-r from-pink-700/40 to-transparent" />
+  </div>
+);
 
-const paragraphVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.8, ease: 'easeOut', staggerChildren: 0.2 },
-  },
-};
+const Tag = ({ children }) => <span className="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full border border-pink-700/35 text-pink-400 bg-pink-900/15 font-medium whitespace-nowrap font-Jakarta">{children}</span>;
 
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeInOut' } },
-  hover: { scale: 1.05, rotate: 2 },
-};
+const SkillPill = ({ children }) => (
+  <span className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-gray-300 hover:border-pink-600/40 hover:text-white transition-all duration-200 font-Jakarta">{children}</span>
+);
 
+// ─── cert popup modal ─────────────────────────────────────────────────────────
+const CertModal = ({ cert, onClose }) => (
+  <AnimatePresence>
+    {cert && (
+      <motion.div className="fixed inset-0 z-[100] flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+        {/* backdrop */}
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+        {/* modal */}
+        <motion.div
+          className="relative z-10 w-full max-w-2xl rounded-2xl border border-white/10 bg-gray-900 shadow-2xl overflow-hidden"
+          initial={{ opacity: 0, scale: 0.94, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.94, y: 16 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* header */}
+          <div className="flex items-start justify-between px-5 py-4 border-b border-white/[0.07]">
+            <div>
+              <p className="text-white font-semibold text-sm font-Jakarta">{cert.name}</p>
+              <p className="text-gray-400 text-xs mt-0.5 font-Jakarta">
+                {cert.issuer} · {cert.year}
+              </p>
+            </div>
+            <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/8 ml-4 flex-shrink-0">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* iframe / preview */}
+          <div className="w-full bg-gray-950" style={{ height: '480px' }}>
+            {cert.previewLink ? (
+              <iframe src={cert.previewLink} title={cert.name} className="w-full h-full border-0" allow="autoplay" />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-600">
+                <svg className="w-10 h-10 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p className="text-sm font-Jakarta">Preview not available</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
+// ─── main component ────────────────────────────────────────────────────────────
 function AboutPage() {
-  const [isFileViewerVisible, setIsFileViewerVisible] = useState(false);
-  const [fileLink, setFileLink] = useState(null);
+  const { t } = useLanguage();
+  const a = t.about;
+  const [activeCert, setActiveCert] = useState(null);
 
-  const handleImageClick = (link) => {
-    setFileLink(link);
-    setIsFileViewerVisible(true);
-  };
+  const skillGroups = [
+    { label: 'Frontend', items: a.skills.frontend },
+    { label: 'Backend', items: a.skills.backend },
+    { label: 'Mobile', items: a.skills.mobile },
+    { label: 'Database', items: a.skills.database },
+  ];
 
-  const closeFileViewer = () => {
-    setIsFileViewerVisible(false);
-    setFileLink(null);
-  };
-
-  const timelineData = [
-    //2021
-    {
-      title: '2021',
-      content: (
-        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-          <p className="mb-8">
-            In 2021, my introduction to programming was somewhat unplanned. It started when I stumbled upon online coding courses on Progate purely out of curiosity. Initially, it was just a fun distraction amidst my busy routine. But as I
-            worked through Python, HTML, and CSS, my casual interest quickly transformed into a genuine passion for programming. Even though I couldn’t finish all the courses due to time constraints, this early exploration opened a door to
-            the world of coding that I would soon embrace wholeheartedly.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/p_html.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://drive.google.com/file/d/1b_-mDOU-Tt-NR8V2YL_lNYYRlmPO98ri/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-start items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Introduction to Html & Css</span>
-              </div>
-            </motion.div>
-            <motion.div className="relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/p_html.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://drive.google.com/file/d/1r3BVaPjO9jAPzLqtcrwtAzeqySP8pekj/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Introduction to Python</span>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      ),
-    },
-    //2022
-    {
-      title: '2022',
-      content: (
-        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-          {/* <h1 className="text-white text-sm md:text-2xl font-semibold mb-2">Advancing My Knowledge in Information Technology</h1> */}
-          <p className="mb-8">
-            As my curiosity in programming grew, I knew I had to dive deeper, and so I enrolled in a double-degree program in Information Technology. This phase involved a lot of small projects, mostly academic assignments. While I wasn’t
-            yet fully immersed in coding, the practical exercises helped me grasp the fundamentals. I chose to work individually, partly because my friends were in different classes, but also as a personal challenge. This allowed me to
-            measure my growing abilities and develop the independence that would later become a key strength in my journey.
-          </p>
-          <div className="grid grid-cols-4 gap-4">
-            <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/doc-isas-qs.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://docs.google.com/document/d/1yVNPiu9aB0HwPsaG__Ei8-74eRQx1qBy/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-lg md:text-base lg:text-lg font-semibold">Isas Quick Sort</span>
-              </div>
-            </motion.div>
-
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-2-bf.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://docs.google.com/presentation/d/1mTGMHrN6jGZDdSNC4R4d7cmX3rDnaofJ/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Penetration Testing Brute Force</span>
-              </div>
-            </motion.div>
-
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-1-ntp.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer "
-                onClick={() => handleImageClick('https://docs.google.com/presentation/d/1M-1OnOXmbMQFf1eQzdNA_MccbCEV11Vq/preview')}
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Analysis of NTP</span>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      ),
-    },
-    //2023
-    {
-      title: '2023',
-      content: (
-        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-          <p className="mb-8">
-            2023 became the turning point in my journey. It started with advanced coding projects from university that introduced me to languages like C++, Java, and Kotlin. Midway through the year, I was lucky enough to land an internship
-            at the House of Representatives (DPR), where I worked as a Fullstack Web and Android Developer. This was my first taste of real-world development, where I learned to navigate the complexities of large-scale projects. By the time
-            I completed my internship, I felt like I had evolved significantly both as a programmer and as a professional. Soon after, I finalized my academic journey at the CCIT FTUI university, and now, I am continuing my education at
-            Asia E University as part of my double degree program.
-          </p>
-
-          <div className="grid grid-cols-6 gap-4 auto-rows-[minmax(100px, 1fr)]">
-            {/* First Image - Vertical layout */}
-            <motion.div className="col-span-2 row-span-3 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/doksli2.JPG" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
-                onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold mb-10">Graduated</span>
-              </div>
-            </motion.div>
-
-            {/* Second Image */}
-            <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/sertif-dpr.png" loading="eager" alt="Brute Force PPT" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-65 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://drive.google.com/file/d/17Cha63VtCPyopWSzmsSGtP-FEfnPNuq1/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">First Internship</span>
-              </div>
-            </motion.div>
-
-            {/* Third Image */}
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-cinema.png" loading="eager" alt="Cinema Ticket" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://docs.google.com/presentation/d/137YL14nu3X46bxkDx5Cf7MXG5zqqvd48/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-pointer"
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Cinema Ticket</span>
-              </div>
-            </motion.div>
-
-            {/* Fourth Image */}
-            <motion.div className="col-span-2 row-span-2 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-odrin.png" loading="eager" alt="Order a drink app" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 cursor-pointer"
-                onClick={() => handleImageClick('https://docs.google.com/presentation/d/1KfTkbz0l7cUsWSqYYEsvl_JUOyh6L6kL/preview')}
-              >
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Order a drink app</span>
-              </div>
-            </motion.div>
-
-            {/* Fifth Image */}
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/evo.png" loading="eager" alt="Learning Coding - 2021" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-center items-end p-4 cursor-disabled">
-                <span className="text-white sm:text-base md:text-sm lg:text-base font-semibold">Small Project from university</span>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      ),
-    },
-    //2024
-    {
-      title: '2024',
-      content: (
-        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-          <p className="mb-8">
-            In 2024, I feel more confident than ever in pursuing a career as a Fullstack Developer. At the end of 2023, I took on a freelance project that involved creating a personal web blog using Laravel. This three-month project not
-            only honed my skills but also gave me valuable experience working with a real client. Completing this project boosted my confidence and inspired me to start applying for full-time roles. Although I faced rejections after several
-            interviews, these experiences helped me identify areas for improvement. To bridge these gaps, I enrolled in an intensive Fullstack Developer bootcamp at harisenin.com, which I am set to complete in October. This program has
-            further strengthened my skills and prepares me to fully step into my career.
-          </p>
-          <div className="grid grid-cols-4 gap-4">
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/news-portal.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://drive.google.com/file/d/18ZPJn37ipz9pTPwNNbSqLL60KLC7LWF-/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
-              >
-                <span className="text-white text-lg font-semibold">portal</span>
-              </div>
-            </motion.div>
-            <motion.div className="col-span-2 row-span-1 relative group" whileHover={{ scale: 1.05 }}>
-              <img src="/dokumen/ppt-journey.png" loading="eager" alt="Learning Coding" className="rounded-lg object-cover h-full w-full shadow-lg group-hover:opacity-75 transition-opacity duration-300" />
-              <div
-                onClick={() => handleImageClick('https://drive.google.com/file/d/1Qxb3QBWGg_uX9IaBhxcQQ1u4Q02-qSWd/preview')}
-                className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex justify-end items-end p-4 "
-              >
-                <span className="text-white text-lg font-semibold">portal</span>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      ),
-    },
-    //2025
-    // {
-    //   title: '2025',
-    //   content: (
-    //     <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-    //       <p>
-    //         As I reflect on my journey so far, I feel a deep sense of accomplishment, but I know that the road ahead is full of even greater challenges and opportunities. With the foundation I've built in web development, mobile
-    //         applications, and real-world project experiences, I am now focused on taking my skills to the global stage. My ultimate goal is to become a Fullstack Developer at an internationally recognized company.
-    //         <br />
-    //         <br />
-    //         To achieve this, I am continuously improving my technical and soft skills, whether through professional development programs, hands-on projects, or self-learning. I understand that adapting to new environments and collaborating
-    //         with diverse teams will be key to thriving in a global market. I am fully committed to expanding my horizons, embracing new technologies, and learning from experienced professionals in the field. The experiences I've had so far
-    //         are just the beginning, and I’m excited for what lies ahead in my journey toward becoming a Fullstack Developer abroad.
-    //       </p>
-    //     </motion.div>
-    //   ),
-    // },
-    // looking ahead
-    {
-      title: 'Looking Ahead',
-      content: (
-        <motion.div className="text-white font-Jakarta text-sm md:text-base lg:text-lg" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
-          <p>
-            As I look back on my journey, I see more than just lines of code and completed projects—I see growth, challenges overcome, and a clear vision of where I want to go next. With a strong foundation in web and mobile development, I
-            am ready to take my career to an international stage, starting with Germany.
-            <br /> <br /> In 2025, I am fully committed to learning German and joining an Ausbildung program. This step is not just about gaining technical skills, but also about adapting to a new work culture, collaborating with talented
-            professionals, and proving myself in a global tech environment. I see Germany as a place where I can refine my expertise, work on innovative projects, and push my abilities to new levels. <br /> <br /> My goal is clear: to
-            become a well-rounded and highly skilled developer with international experience. Germany is the perfect place to start that journey. Here, I aim to grow, contribute, and build something meaningful—both for the teams I work with
-            and for my own career. Beyond that, I remain open to opportunities that will take me even further. Technology is always evolving, and so am I. The road ahead is filled with challenges, but that’s what makes it exciting. This
-            isn’t just a career path—it’s a lifelong adventure. And I’m just getting started.
-          </p>
-        </motion.div>
-      ),
-    },
+  const stats = [
+    { value: '3+', label: a.stats?.projects ?? 'Projects' },
+    { value: '2', label: a.stats?.internships ?? 'Internships' },
+    { value: '4+', label: a.stats?.certs ?? 'Certifications' },
   ];
 
   return (
-    <motion.div className="relative min-h-screen bg-gray-900 bg-opacity-95" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-      <BackgroundBeamsWithCollision className="absolute inset-0 z-0 h-full opacity-65 pointer-events-none" />
-      <Navbar className="relative z-10" />
+    <motion.div className="relative min-h-screen bg-gray-900" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+      <BackgroundBeamsWithCollision className="absolute inset-0 z-0 opacity-65 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <motion.div className="flex flex-col lg:flex-row justify-between items-center" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-          <motion.div className="text-white font-Jakarta sm:text-base md:text-lg lg:text-lg max-w-xl" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-            <motion.h2 variants={headingVariants} className="text-2xl md:text-4xl font-semibold text-pink-600 mb-6">
-              My Journey as a Fullstack Developer
-            </motion.h2>
-            <motion.p variants={paragraphVariants} className="leading-relaxed mb-6">
-              Since discovering my passion for web and mobile development in 2021, I have continuously expanded my skills through formal education and various projects. These experiences have strengthened my expertise in fullstack
-              development.
-            </motion.p>
-            <motion.p variants={paragraphVariants} className="leading-relaxed">
-              To stay ahead in this fast-evolving field, I have completed several bootcamps and training programs, further enhancing my technical abilities. I am committed to lifelong learning and always ready to embrace new challenges as I
-              continue my journey as a Fullstack Developer.
-            </motion.p>
-          </motion.div>
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
+        <motion.div className="mb-14" variants={fadeUp} initial="hidden" animate="visible">
+          {/* availability badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-600/30 bg-green-900/20 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-green-400 text-xs font-semibold font-Jakarta">{a.available ?? 'Open to opportunities'}</span>
+          </div>
 
-          <motion.div className="mt-10 lg:mt-0 lg:ml-10 hidden lg:block" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}>
-            <div className="flex justify-center items-center">
-              <motion.img
-                src="/dokumen/profil.jpg"
-                alt="Journey illustration"
-                loading="eager"
-                className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-pink-700"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                variants={imageVariants}
-              />
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white font-Jakarta">Muhammad Ryan Cakraningrat</h1>
+              <p className="text-pink-500 text-sm font-medium mt-1 font-Jakarta">{a.subtitle}</p>
+              {/* short tagline only — not repeating the homepage bio */}
+              <p className="mt-3 text-gray-400 text-sm leading-relaxed max-w-lg font-Jakarta">{a.tagline ?? 'Fullstack Developer · Web & Mobile · Targeting Ausbildung in Germany 🇩🇪'}</p>
             </div>
-          </motion.div>
+
+            {/* quick stats */}
+            <div className="flex gap-6 sm:gap-8 flex-shrink-0">
+              {stats.map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <p className="text-xl sm:text-2xl font-bold text-white font-Jakarta">{value}</p>
+                  <p className="text-[11px] text-gray-500 font-Jakarta mt-0.5 whitespace-nowrap">{label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-wrap gap-3 mt-5">
+            <a
+              href="/CV_Muhammad-Ryan-Cakraningrat.pdf"
+              download
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-700 hover:bg-pink-800 text-white text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-pink-900/30 font-Jakarta"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              {a.downloadCV}
+            </a>
+            <a
+              href="mailto:ryancakra92@gmail.com"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-pink-700/40 hover:border-pink-600 text-pink-400 hover:text-white text-sm font-semibold transition-all duration-200 font-Jakarta"
+            >
+              {a.contact}
+            </a>
+          </div>
         </motion.div>
+
+        {/* ── EXPERIENCE ─────────────────────────────────────────────────────── */}
+        <motion.section className="mb-12" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
+          <SectionLabel>{a.sections.experience}</SectionLabel>
+          <div className="space-y-3">
+            {a.experience.map((exp, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.025] hover:bg-white/[0.05] hover:border-pink-700/25 transition-all duration-300 p-5"
+              >
+                <span className="absolute left-0 top-5 bottom-5 w-[2px] rounded-full bg-gradient-to-b from-pink-600 to-pink-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 mb-2">
+                  <div>
+                    <h3 className="text-white font-semibold text-sm font-Jakarta">{exp.role}</h3>
+                    <p className="text-pink-400 text-xs font-Jakarta">{exp.company}</p>
+                  </div>
+                  <span className="text-gray-500 text-xs whitespace-nowrap font-Jakarta">{exp.period}</span>
+                </div>
+                <p className="text-gray-400 text-xs leading-relaxed mb-3 font-Jakarta">{exp.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {exp.tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ── EDUCATION ──────────────────────────────────────────────────────── */}
+        <motion.section className="mb-12" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
+          <SectionLabel>{a.sections.education}</SectionLabel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {a.education.map((edu, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="rounded-xl border border-white/[0.06] bg-white/[0.025] hover:border-pink-700/25 transition-all duration-300 p-5"
+              >
+                <p className="text-white font-semibold text-sm font-Jakarta mb-1">{edu.degree}</p>
+                <p className="text-pink-400 text-xs font-Jakarta">{edu.school}</p>
+                <div className="flex items-center justify-between mt-3">
+                  <span className="text-gray-500 text-xs font-Jakarta">{edu.period}</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-900/25 border border-pink-700/25 text-pink-400 font-Jakarta">{edu.note}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ── TECH STACK ─────────────────────────────────────────────────────── */}
+        <motion.section className="mb-12" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
+          <SectionLabel>{a.sections.skills}</SectionLabel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {skillGroups.map(({ label, items }) => (
+              <div key={label}>
+                <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-3 font-Jakarta">{label}</p>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((s) => (
+                    <SkillPill key={s}>{s}</SkillPill>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ── CERTIFICATIONS ─────────────────────────────────────────────────── */}
+        <motion.section variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
+          <SectionLabel>{a.sections.certifications}</SectionLabel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {a.certifications.map((cert, i) => (
+              <motion.button
+                key={i}
+                custom={i}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                onClick={() => cert.previewLink && setActiveCert(cert)}
+                className={`group text-left flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.025] transition-all duration-300 p-4 w-full
+                  ${cert.previewLink ? 'hover:border-pink-700/35 hover:bg-white/[0.05] cursor-pointer' : 'cursor-default opacity-60'}`}
+              >
+                <div className="mt-0.5 w-7 h-7 rounded-lg bg-pink-900/35 border border-pink-700/25 flex items-center justify-center flex-shrink-0 group-hover:border-pink-600/50 transition-colors">
+                  <svg className="w-3.5 h-3.5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-xs sm:text-sm font-semibold font-Jakarta leading-snug">{cert.name}</p>
+                  <p className="text-gray-500 text-[11px] mt-0.5 font-Jakarta">
+                    {cert.issuer} · {cert.year}
+                  </p>
+                </div>
+                {cert.previewLink && (
+                  <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity mt-0.5">
+                    <svg className="w-3.5 h-3.5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </div>
+                )}
+              </motion.button>
+            ))}
+          </div>
+          <p className="text-[11px] text-gray-600 mt-3 font-Jakarta">{a.certHint ?? '↑ Click a certificate to preview'}</p>
+        </motion.section>
       </div>
 
-      <Timeline data={timelineData} key={window.location.pathname} />
-      {isFileViewerVisible && <FileViewer fileLink={fileLink} onClose={closeFileViewer} />}
+      <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />
     </motion.div>
   );
 }
