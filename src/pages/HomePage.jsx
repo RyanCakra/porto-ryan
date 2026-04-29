@@ -54,8 +54,6 @@ function HomePage() {
     <motion.div className="relative min-h-screen bg-gray-900 overflow-hidden flex flex-col" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
       {/* background beams */}
       <BackgroundBeamsWithCollision className="absolute inset-0 z-0 opacity-60 pointer-events-none" />
-
-      {/* sigma bg image — very faint */}
       <div
         className="pointer-events-none absolute inset-0 z-[1] opacity-[0.125]"
         style={{
@@ -95,7 +93,7 @@ function HomePage() {
       </motion.header>
 
       {/* ─────────────────────────────────────────────────────────────────────
-          HERO — flex-1 so it takes remaining vertical space
+          HERO
       ───────────────────────────────────────────────────────────────────── */}
       <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-6 text-center pb-6">
         {/* 1 · FlipWords greeting — biggest visual weight */}
@@ -124,8 +122,10 @@ function HomePage() {
 
         {/* 4 · CTAs */}
         <motion.div className="flex flex-col sm:flex-row items-center gap-3 mt-7" variants={fadeUp} initial="hidden" animate="visible" custom={0.7}>
-          <a href="/CV_Muhammad-Ryan-Cakraningrat.pdf" download="CV_Muhammad-Ryan-Cakraningrat.pdf">
+          {/* 1. Menggunakan h.cvFile yang dinamis dari LanguageContext */}
+          <a href={h.cvFile} download={h.cvFile}>
             <HoverBorderGradient containerClassName="w-full sm:w-auto" className="px-6 py-2.5 text-center font-Jakarta text-sm font-semibold" roundedClass="rounded-lg">
+              {/* 2. Menggunakan teks resume yang dinamis */}
               {h.resume}
             </HoverBorderGradient>
           </a>
@@ -153,8 +153,6 @@ function HomePage() {
 
       {/* ─────────────────────────────────────────────────────────────────────
           BOTTOM BAR — "explore" nav, pinned to bottom
-          About & Projects are large + bold so they're clearly clickable,
-          not just decorative links. Arrow appears on hover to signal action.
       ───────────────────────────────────────────────────────────────────── */}
       <motion.footer className="relative z-20 border-t border-white/[0.06]" variants={fadeUp} initial="hidden" animate="visible" custom={0.95}>
         <div className="flex items-center justify-center gap-0 divide-x divide-white/[0.06]">
@@ -183,7 +181,13 @@ function HomePage() {
       </motion.footer>
 
       {/* version stamp */}
-      <motion.p className="absolute bottom-3 right-5 text-[10px] uppercase tracking-[0.15em] text-gray-700 font-Jakarta z-30 pointer-events-none" variants={fadeUp} initial="hidden" animate="visible" custom={1.1}>
+      <motion.p
+        className="hidden sm:block absolute bottom-2 right-2 sm:bottom-3 sm:right-5 text-[8px] sm:text-[10px] uppercase tracking-[0.15em] text-gray-700 font-Jakarta z-30 pointer-events-none text-right"
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={1.1}
+      >
         last updated: 29/04/2026
       </motion.p>
     </motion.div>

@@ -10,7 +10,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: 'easeOut', delay: i * 0.06 },
+    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: i * 0.06 },
   }),
 };
 
@@ -33,10 +33,7 @@ const CertModal = ({ cert, onClose }) => (
   <AnimatePresence>
     {cert && (
       <motion.div className="fixed inset-0 z-[100] flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-        {/* backdrop */}
         <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-
-        {/* modal */}
         <motion.div
           className="relative z-10 w-full max-w-2xl rounded-2xl border border-white/10 bg-gray-900 shadow-2xl overflow-hidden"
           initial={{ opacity: 0, scale: 0.94, y: 16 }}
@@ -45,13 +42,13 @@ const CertModal = ({ cert, onClose }) => (
           transition={{ duration: 0.22, ease: 'easeOut' }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* header */}
           <div className="flex items-start justify-between px-5 py-4 border-b border-white/[0.07]">
             <div>
               <p className="text-white font-semibold text-sm font-Jakarta">{cert.name}</p>
               <p className="text-gray-400 text-xs mt-0.5 font-Jakarta">
                 {cert.issuer} · {cert.year}
               </p>
+              {cert.id && <p className="text-gray-600 text-[10px] mt-1 font-Jakarta font-mono">ID: {cert.id}</p>}
             </div>
             <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/8 ml-4 flex-shrink-0">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,8 +56,6 @@ const CertModal = ({ cert, onClose }) => (
               </svg>
             </button>
           </div>
-
-          {/* iframe / preview */}
           <div className="w-full bg-gray-950" style={{ height: '480px' }}>
             {cert.previewLink ? (
               <iframe src={cert.previewLink} title={cert.name} className="w-full h-full border-0" allow="autoplay" />
@@ -90,12 +85,13 @@ function AboutPage() {
     { label: 'Backend', items: a.skills.backend },
     { label: 'Mobile', items: a.skills.mobile },
     { label: 'Database', items: a.skills.database },
+    { label: 'Tools', items: a.skills.tools },
   ];
 
   const stats = [
-    { value: '3+', label: a.stats?.projects ?? 'Projects' },
-    { value: '2', label: a.stats?.internships ?? 'Internships' },
-    { value: '4+', label: a.stats?.certs ?? 'Certifications' },
+    { value: '9+', label: a.stats?.projects ?? 'Projects' },
+    { value: '3', label: a.stats?.internships ?? 'Work Exp.' },
+    { value: '6+', label: a.stats?.certs ?? 'Certifications' },
   ];
 
   return (
@@ -105,49 +101,73 @@ function AboutPage() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <motion.div className="mb-14" variants={fadeUp} initial="hidden" animate="visible">
-          {/* availability badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-600/30 bg-green-900/20 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-green-400 text-xs font-semibold font-Jakarta">{a.available ?? 'Open to opportunities'}</span>
-          </div>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+            {/* ── Left: text content ── */}
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-black text-white font-Jakarta leading-tight">Muhammad Ryan Cakraningrat</h1>
+              <p className="text-pink-500 text-sm font-semibold mt-1.5 font-Jakarta">{a.subtitle}</p>
+              <p className="text-gray-500 text-xs font-Jakarta mt-0.5">{a.tagline}</p>
 
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white font-Jakarta">Muhammad Ryan Cakraningrat</h1>
-              <p className="text-pink-500 text-sm font-medium mt-1 font-Jakarta">{a.subtitle}</p>
-              {/* short tagline only — not repeating the homepage bio */}
-              <p className="mt-3 text-gray-400 text-sm leading-relaxed max-w-lg font-Jakarta">{a.tagline ?? 'Fullstack Developer · Web & Mobile · Targeting Ausbildung in Germany 🇩🇪'}</p>
-            </div>
+              <p className="mt-4 text-gray-400 text-sm leading-relaxed font-Jakarta max-w-xl">{a.bio}</p>
 
-            {/* quick stats */}
-            <div className="flex gap-6 sm:gap-8 flex-shrink-0">
-              {stats.map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <p className="text-xl sm:text-2xl font-bold text-white font-Jakarta">{value}</p>
-                  <p className="text-[11px] text-gray-500 font-Jakarta mt-0.5 whitespace-nowrap">{label}</p>
+              {/* languages */}
+              {a.languages && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {a.languages.map(({ lang, level }) => (
+                    <span key={lang} className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-gray-400 font-Jakarta">
+                      <span className="text-gray-600">🌐</span>
+                      <span className="text-gray-300 font-medium">{lang}</span>
+                      <span className="text-gray-600">·</span>
+                      <span>{level}</span>
+                    </span>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              )}
 
-          {/* CTA */}
-          <div className="flex flex-wrap gap-3 mt-5">
-            <a
-              href="/CV_Muhammad-Ryan-Cakraningrat.pdf"
-              download
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-700 hover:bg-pink-800 text-white text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-pink-900/30 font-Jakarta"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              {a.downloadCV}
-            </a>
-            <a
-              href="mailto:ryancakra92@gmail.com"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-pink-700/40 hover:border-pink-600 text-pink-400 hover:text-white text-sm font-semibold transition-all duration-200 font-Jakarta"
-            >
-              {a.contact}
-            </a>
+              {/* CTAs — CV file is language-specific */}
+              <div className="flex flex-wrap gap-3 mt-6">
+                <a
+                  href={a.cvFile}
+                  download
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-700 hover:bg-pink-800 text-white text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-pink-900/30 font-Jakarta"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  {a.downloadCV}
+                </a>
+                <a
+                  href="mailto:ryancakra92@gmail.com"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-pink-700/40 hover:border-pink-600 text-pink-400 hover:text-white text-sm font-semibold transition-all duration-200 font-Jakarta"
+                >
+                  {a.contact}
+                </a>
+              </div>
+            </div>
+
+            {/* ── Right: photo + stats ── */}
+            <motion.div className="flex-shrink-0 flex flex-col items-center gap-5 sm:pt-1" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}>
+              {/* profile photo */}
+              <div className="relative">
+                <div className="absolute -inset-[3px] rounded-full bg-gradient-to-br from-pink-600 via-pink-800 to-transparent opacity-80" />
+                <div className="absolute -inset-5 rounded-full bg-pink-700/10 blur-2xl pointer-events-none" />
+                <img src="/dokumen/profil.jpg" alt={a.profileAlt ?? 'Profile'} className="relative w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-full border-2 border-gray-900" loading="eager" />
+                <span className="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-gray-900 animate-pulse" />
+              </div>
+
+              {/* stats row */}
+              <div className="flex items-center gap-4 sm:gap-5">
+                {stats.map(({ value, label }, i) => (
+                  <React.Fragment key={label}>
+                    <div className="flex flex-col items-center">
+                      <span className="text-lg sm:text-xl font-black text-white font-Jakarta leading-none">{value}</span>
+                      <span className="text-[10px] text-gray-500 font-Jakarta mt-1 whitespace-nowrap text-center">{label}</span>
+                    </div>
+                    {i < stats.length - 1 && <span className="w-px h-6 bg-white/[0.08]" />}
+                  </React.Fragment>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -163,15 +183,15 @@ function AboutPage() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.025] hover:bg-white/[0.05] hover:border-pink-700/25 transition-all duration-300 p-5"
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.025] hover:bg-white/[0.05] hover:border-pink-700/25 transition-all duration-300 p-5 overflow-hidden"
               >
-                <span className="absolute left-0 top-5 bottom-5 w-[2px] rounded-full bg-gradient-to-b from-pink-600 to-pink-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute left-0 top-0 bottom-0 w-[2px] rounded-full bg-gradient-to-b from-pink-600 to-pink-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 mb-2">
                   <div>
                     <h3 className="text-white font-semibold text-sm font-Jakarta">{exp.role}</h3>
                     <p className="text-pink-400 text-xs font-Jakarta">{exp.company}</p>
                   </div>
-                  <span className="text-gray-500 text-xs whitespace-nowrap font-Jakarta">{exp.period}</span>
+                  <span className="text-gray-500 text-xs whitespace-nowrap font-Jakarta flex-shrink-0">{exp.period}</span>
                 </div>
                 <p className="text-gray-400 text-xs leading-relaxed mb-3 font-Jakarta">{exp.desc}</p>
                 <div className="flex flex-wrap gap-2">
@@ -187,7 +207,7 @@ function AboutPage() {
         {/* ── EDUCATION ──────────────────────────────────────────────────────── */}
         <motion.section className="mb-12" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
           <SectionLabel>{a.sections.education}</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {a.education.map((edu, i) => (
               <motion.div
                 key={i}
@@ -198,11 +218,11 @@ function AboutPage() {
                 viewport={{ once: true }}
                 className="rounded-xl border border-white/[0.06] bg-white/[0.025] hover:border-pink-700/25 transition-all duration-300 p-5"
               >
-                <p className="text-white font-semibold text-sm font-Jakarta mb-1">{edu.degree}</p>
+                <p className="text-white font-semibold text-sm font-Jakarta mb-1 leading-snug">{edu.degree}</p>
                 <p className="text-pink-400 text-xs font-Jakarta">{edu.school}</p>
-                <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
                   <span className="text-gray-500 text-xs font-Jakarta">{edu.period}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-900/25 border border-pink-700/25 text-pink-400 font-Jakarta">{edu.note}</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-900/25 border border-pink-700/25 text-pink-400 font-Jakarta whitespace-nowrap">{edu.note}</span>
                 </div>
               </motion.div>
             ))}
@@ -212,7 +232,7 @@ function AboutPage() {
         {/* ── TECH STACK ─────────────────────────────────────────────────────── */}
         <motion.section className="mb-12" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
           <SectionLabel>{a.sections.skills}</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
             {skillGroups.map(({ label, items }) => (
               <div key={label}>
                 <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-3 font-Jakarta">{label}</p>

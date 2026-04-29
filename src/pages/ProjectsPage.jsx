@@ -28,16 +28,14 @@ const TECH_COLOR = {
 
 const techClass = (t) => TECH_COLOR[t] ?? 'text-gray-400 border-gray-400/20 bg-gray-400/5';
 
-// ─── modal ────────────────────────────────────────────────────────────────────
+// ─── modal responsif ──────────────────────────────────────────────────────────
 function ProjectModal({ card, onClose }) {
-  const overlayRef = useRef(null);
-
   useEffect(() => {
-    const fn = (e) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', fn);
+    const handleEsc = (e) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', handleEsc);
     document.body.style.overflow = 'hidden';
     return () => {
-      window.removeEventListener('keydown', fn);
+      window.removeEventListener('keydown', handleEsc);
       document.body.style.overflow = 'auto';
     };
   }, [onClose]);
@@ -45,76 +43,103 @@ function ProjectModal({ card, onClose }) {
   const isGithub = card.ctaText.toLowerCase().includes('git');
 
   return (
-    <motion.div
-      ref={overlayRef}
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.18 }}
-      onClick={(e) => e.target === overlayRef.current && onClose()}
-    >
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
+    <div className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-8">
+      {/* Backdrop */}
+      <motion.div className="absolute inset-0 bg-black/85 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
 
-      {/* panel */}
+      {/* Panel Modal */}
       <motion.div
-        className="relative z-10 w-full max-w-xl rounded-2xl bg-gray-900 border border-white/[0.09] shadow-2xl shadow-black/60 overflow-hidden flex flex-col"
-        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        className="relative z-10 w-full max-w-5xl bg-[#16161a] border-t sm:border border-white/10 shadow-2xl rounded-t-[2rem] sm:rounded-3xl overflow-hidden flex flex-col md:flex-row cursor-default"
+        initial={{ opacity: 0, y: 100, scale: 1 }} // Muncul dari bawah di mobile
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 16, scale: 0.97 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        style={{ maxHeight: '90vh' }}
+        exit={{ opacity: 0, y: 100, scale: 0.95 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxHeight: '92vh', // Memberikan ruang di atas agar user sadar bisa klik luar
+          height: 'auto',
+        }}
       >
-        {/* ── image ── */}
-        <div className="relative flex-shrink-0">
-          <Img src={card.src} alt={card.title} className="w-full object-cover object-top" style={{ height: '220px' }} />
-          {/* gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent" />
+        {/* Tombol Close Mobile (Floating) */}
+        <button onClick={onClose} className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white sm:hidden">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
-          {/* index badge */}
-          <span className="absolute top-4 left-4 text-[11px] font-black font-Jakarta text-white/25 tabular-nums">{String(card._index + 1).padStart(2, '0')}</span>
+        {/* ── BAGIAN GAMBAR ── */}
+        <div className="relative w-full md:w-3/5 bg-black flex-shrink-0 overflow-hidden border-b border-white/10 md:border-b-0 md:border-r">
+          <Img
+            src={card.src}
+            alt={card.title}
+            className="w-full h-full object-cover object-top"
+            style={{
+              aspectRatio: '16 / 10',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#16161a] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#16161a]/40" />
 
-          {/* close */}
-          <button onClick={onClose} className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <span className="absolute bottom-4 left-6 text-[10px] font-black font-Jakarta text-pink-500 bg-black/40 px-2 py-1 rounded backdrop-blur-sm sm:top-6 sm:bottom-auto">{String(card._index + 1).padStart(2, '0')}</span>
+        </div>
 
-          {/* title overlay on image bottom */}
-          <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+        {/* ── BAGIAN KONTEN ── */}
+        <div className="flex flex-col flex-1 overflow-hidden">
+          {/* Header Desktop */}
+          <div className="hidden sm:flex px-8 py-6 justify-between items-start border-b border-white/[0.05]">
+            <div>
+              <h2 className="text-white font-black font-Jakarta text-2xl leading-tight">{card.title}</h2>
+              <p className="text-pink-500 text-[10px] mt-1 font-bold font-Jakarta tracking-[0.2em]">{card.description}</p>
+            </div>
+            <button onClick={onClose} className="p-2 text-gray-500 hover:text-white transition-all">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Header Mobile (Simple) */}
+          <div className="sm:hidden px-6 pt-6 pb-2">
             <h2 className="text-white font-black font-Jakarta text-xl leading-tight">{card.title}</h2>
-            <p className="text-gray-400 text-xs mt-1 font-Jakarta">{card.description}</p>
+            <p className="text-pink-500 text-[9px] mt-1 font-bold font-Jakarta uppercase tracking-widest">{card.description}</p>
           </div>
-        </div>
 
-        {/* ── body ── */}
-        <div className="px-5 py-4 overflow-y-auto custom-scrollbar flex-1">
-          <p className="text-gray-300 text-sm leading-relaxed font-Jakarta">{card.detail}</p>
+          {/* Body Scrollable */}
+          <div className="px-6 sm:px-8 py-4 overflow-y-auto custom-scrollbar flex-1 space-y-6">
+            <section>
+              <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Overview</h4>
+              <p className="text-gray-300 text-sm sm:text-[15px] leading-relaxed font-Jakarta">{card.detail}</p>
+            </section>
 
-          {/* tech tags */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            {card.tech.map((t) => (
-              <span key={t} className={`text-[11px] px-2.5 py-1 rounded-full border font-Jakarta font-medium ${techClass(t)}`}>
-                {t}
-              </span>
-            ))}
+            <section>
+              <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Stack</h4>
+              <div className="flex flex-wrap gap-2">
+                {card.tech.map((t) => (
+                  <span key={t} className={`text-[10px] px-2.5 py-1.5 rounded-lg border font-bold ${techClass(t)}`}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </section>
           </div>
-        </div>
 
-        {/* ── footer ── */}
-        <div className="px-5 py-4 border-t border-white/[0.06] flex items-center justify-between flex-shrink-0">
-          <button onClick={onClose} className="text-xs text-gray-600 hover:text-gray-400 font-Jakarta transition-colors">
-            ← Back
-          </button>
-          <a href={card.ctaLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-700 hover:bg-pink-800 text-white text-xs font-semibold font-Jakarta transition-colors duration-200">
-            {isGithub ? <FaGithub size={12} /> : <FaExternalLinkAlt size={10} />}
-            {card.ctaText}
-          </a>
+          {/* Footer (Fixed at Bottom) */}
+          <div className="px-6 sm:px-8 py-6 sm:py-8 mt-auto border-t border-white/[0.05] bg-black/20 flex flex-col sm:flex-row items-center gap-4">
+            <a
+              href={card.ctaLink}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-pink-700 hover:bg-pink-600 text-white text-xs font-black font-Jakarta shadow-lg transition-all active:scale-95"
+            >
+              {isGithub ? <FaGithub size={16} /> : <FaExternalLinkAlt size={14} />}
+              {card.ctaText.toUpperCase()}
+            </a>
+            <button onClick={onClose} className="hidden sm:block text-[11px] font-bold text-gray-500 hover:text-gray-300 uppercase tracking-widest transition-colors">
+              Back
+            </button>
+          </div>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -127,19 +152,20 @@ function ProjectCard({ card, index, onClick }) {
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 }}
       onClick={onClick}
-      className="group relative flex flex-col rounded-xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.045] hover:border-pink-700/30 cursor-pointer overflow-hidden transition-all duration-300"
+      // PERUBAHAN: Warna bg diubah ke bg-gray-900 agar sama dengan modal, border diperjelas
+      className="group relative flex flex-col rounded-2xl border border-white/[0.08] bg-gray-900 hover:bg-[#16161a] hover:border-pink-700/40 cursor-pointer overflow-hidden transition-all duration-300 shadow-xl shadow-black/20"
     >
       {/* image */}
-      <div className="relative overflow-hidden">
-        <Img src={card.src} alt={card.title} className="w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.05]" style={{ height: '200px' }} />
+      <div className="relative overflow-hidden aspect-[16/10]">
+        <Img src={card.src} alt={card.title} className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110" />
 
-        {/* index */}
-        <span className="absolute top-3 left-3 text-[10px] font-black font-Jakarta text-white/25 tabular-nums select-none">{String(index + 1).padStart(2, '0')}</span>
+        {/* Index badge ala Modal */}
+        <span className="absolute top-3 left-3 text-[10px] font-black font-Jakarta text-white/30 tabular-nums select-none bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/5">{String(index + 1).padStart(2, '0')}</span>
 
-        {/* hover reveal */}
-        <motion.div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent flex items-end p-3" initial={{ opacity: 0 }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }}>
-          <span className="text-[10px] uppercase tracking-[0.15em] text-gray-200 font-Jakarta flex items-center gap-1.5">
-            View details
+        {/* Hover overlay yang lebih smooth */}
+        <motion.div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-white font-Jakarta flex items-center gap-2 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+            View Project
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -148,26 +174,30 @@ function ProjectCard({ card, index, onClick }) {
       </div>
 
       {/* info */}
-      <div className="p-4 flex flex-col flex-1 gap-2">
-        <h3 className="text-white font-semibold text-sm font-Jakarta leading-snug">{card.title}</h3>
-        <p className="text-gray-500 text-[11px] leading-relaxed font-Jakarta flex-1">{card.description}</p>
+      <div className="p-5 flex flex-col flex-1 gap-3">
+        <div>
+          <h3 className="text-white font-bold text-[15px] font-Jakarta leading-tight group-hover:text-pink-500 transition-colors">{card.title}</h3>
+          <p className="text-gray-400 text-[11px] mt-1.5 leading-relaxed font-Jakarta line-clamp-2">{card.description}</p>
+        </div>
 
-        {/* tech preview — first 3 only */}
-        <div className="flex flex-wrap gap-1.5 mt-1">
+        {/* tech preview */}
+        <div className="flex flex-wrap gap-1.5">
           {card.tech.slice(0, 3).map((t) => (
-            <span key={t} className={`text-[10px] px-2 py-0.5 rounded-full border font-Jakarta ${techClass(t)}`}>
+            <span key={t} className={`text-[9px] px-2 py-0.5 rounded-md border font-bold font-Jakarta uppercase tracking-wider ${techClass(t)}`}>
               {t}
             </span>
           ))}
-          {card.tech.length > 3 && <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/10 text-gray-600 font-Jakarta">+{card.tech.length - 3}</span>}
+          {card.tech.length > 3 && <span className="text-[9px] px-2 py-0.5 rounded-md border border-white/10 text-gray-500 font-Jakarta font-bold">+{card.tech.length - 3}</span>}
         </div>
 
         {/* bottom row */}
-        <div className="flex items-center justify-between pt-2 mt-1 border-t border-white/[0.05]">
-          <span className="text-[10px] uppercase tracking-[0.12em] text-pink-600/60 font-Jakarta font-semibold">{card.ctaText}</span>
-          <svg className="w-3.5 h-3.5 text-gray-700 group-hover:text-pink-500 group-hover:translate-x-0.5 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+        <div className="flex items-center justify-between pt-3 mt-auto border-t border-white/[0.05]">
+          <span className="text-[10px] uppercase tracking-[0.15em] text-pink-600 font-black font-Jakarta">{card.ctaText}</span>
+          <div className="w-6 h-6 rounded-full bg-white/[0.03] flex items-center justify-center group-hover:bg-pink-700 transition-colors duration-300">
+            <svg className="w-3 h-3 text-gray-500 group-hover:text-white transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
         </div>
       </div>
     </motion.div>

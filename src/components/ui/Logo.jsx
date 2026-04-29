@@ -1,19 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-/**
- * Logo Component — ryan.
- *
- * Usage in Navbar:
- *   import Logo from './ui/Logo';
- *   <Logo size={40} />
- *
- * The SVG viewBox is cropped to tightly frame the logo mark.
- * On hover:
- *   - White "r" letter morphs to a soft pink glow
- *   - Magenta dot bounces up with a spring
- *   - Subtle shimmer overlay sweeps across
- */
 const Logo = ({ size = 40 }) => {
   const [hovered, setHovered] = useState(false);
 

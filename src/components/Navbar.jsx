@@ -1,12 +1,4 @@
 // ─── Navbar.jsx ───────────────────────────────────────────────────────────────
-// Drop-in replacement for your existing Navbar.
-// Adds a language switcher (EN / ID / DE) in the top-right area.
-// Reads / writes language through LanguageContext.
-//
-// Usage: wrap your app in <LanguageProvider> (see LanguageContext.jsx) then
-// everything works automatically.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import React, { useState } from 'react';
 import Logo from './ui/Logo.jsx';
 import { Link, useLocation } from 'react-router-dom';
@@ -100,7 +92,6 @@ function Navbar({ className, activePath }) {
         </div>
         {/* Mobile: hamburger + lang button */}
         <div className="flex sm:hidden items-center gap-3">
-          {/* compact lang switcher on mobile */}
           <div className="relative">
             <button onClick={() => setLangOpen((v) => !v)} className="flex items-center gap-1 text-xs font-Jakarta text-gray-400 border border-white/10 rounded-lg px-2 py-1.5">
               <span>{activeLang.flag}</span>
@@ -152,7 +143,7 @@ function Navbar({ className, activePath }) {
             transition={{ duration: 0.2 }}
             className="sm:hidden border-t border-white/8 bg-gray-900/95 backdrop-blur-sm"
           >
-            <div className="px-4 py-3 flex flex-col gap-1">
+            <div className="px-4 py-3 flex flex-col gap-1 ">
               {navLinks.map(({ path, label }) => (
                 <Link
                   key={path}
